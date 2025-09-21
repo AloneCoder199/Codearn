@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* Import default NProgress style */
+@import "nprogress/nprogress.css";
+
+/* Progress Bar with Snake Effect */
+#nprogress .bar {
+  height: 4px !important;
+  border-radius: 4px;
+  background: linear-gradient(
+    270deg,
+    #00bcd4,
+    #ff9800,
+    #ff4081,
+    #00bcd4
+  );
+  background-size: 200% 200%;
+  animation: snakeWave 2s linear infinite;
+  box-shadow: 0 0 12px rgba(0, 188, 212, 0.7);
+}
+
+/* Peg Glow */
+#nprogress .peg {
+  box-shadow: 0 0 20px #00bcd4, 0 0 15px #ff9800, 0 0 10px #ff4081 !important;
+  border-radius: 2px;
+}
+
+/* === Custom Speed Counter === */
+.custom-speed {
+  position: fixed;
+  top: 12px;
+  right: 20px;
+  font-size:5px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+  background: linear-gradient(135deg, #00bcd4, #ff9800, #ff4081);
+  padding: 6px 14px;
+  border-radius:10px;
+  box-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+  animation: pulse 1.2s infinite alternate;
+  z-index: 9999;
+}
+
+/* Snake wave effect for progress bar */
+@keyframes snakeWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Pulse effect for counter */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 12px rgba(0, 188, 212, 0.7);
+  }
+  100% {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 152, 0, 0.7);
+  }
+}
+
+
+
+
+
+/* Scrollbar for Webkit Browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 2px; /* width of vertical scrollbar */
+  height: 5px; /* height of horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #132C3E; /* Track background */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00BCD4, #FF9800); /* Thumb gradient */
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FF9800, #00BCD4); /* hover effect */
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #00BCD4 #132C3E;
+}
