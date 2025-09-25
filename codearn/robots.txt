@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block unwanted folders
+Disallow: /admin
+Disallow: /api
+Disallow: /server
+
+# Sitemap location
+Sitemap: https://codearntech.cloud/sitemap.xml

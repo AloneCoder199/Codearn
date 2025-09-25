@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import NProgress from "nprogress";
@@ -12,33 +12,12 @@ import Footer from "./Components/Footer.jsx";
 import Chatbot from "./Components/Chatbot.jsx";
 import BlogPost from "./Components/BlogPost.jsx";
 import LiveChat from "./Components/Chatbot.jsx";
-
-// NProgress.configure({
-//   showSpinner: false, // disable default circle
-// });
-
-// // Counter add karna
-// const speedEl = document.createElement("div");
-// speedEl.classList.add("custom-speed");
-// document.body.appendChild(speedEl);
-
-// // Progress update hook
-// const originalSet = NProgress.set;
-// NProgress.set = function (n) {
-//   speedEl.innerText = `Loading ${Math.round(n * 100)}%`;
-//   return originalSet.call(this, n);
-// };
-
-// // Complete hone par hide karna
-// const originalDone = NProgress.done;
-// NProgress.done = function () {
-//   speedEl.innerText = "Done ✅";
-//   setTimeout(() => {
-//     speedEl.style.display = "none";
-//   }, 800);
-//   return originalDone.call(this);
-// };
-// Ye component sirf NProgress handle karega
+import NavbarSkeleton from "./Components/Skeleton/NavbarSkeleton.jsx";
+import AboutSkeleton from "./Components/Skeleton/AboutSkeleton.jsx"; // ✅ new import
+import ProjectsSkeleto from "./Components/Skeleton/ProjectsSkeleton.jsx"
+import BlogListSkeleton from "./Components/Skeleton/BlogListSkeleton.jsx";
+import ContactSkeleton from "./Components/Skeleton/ContactSkeleton.jsx";
+import BlogPostSkeleton from "./Components/Skeleton/BlogPostSkeleton.jsx";
 function ProgressHandler() {
   const location = useLocation();
 
@@ -49,30 +28,42 @@ function ProgressHandler() {
     }, 500);
   }, [location]);
 
-  return null; // ye kuch render nahi karega, sirf NProgress control karega
+  return null;
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // simulate loading
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
+
   return (
     <Router>
-      <ProgressHandler /> {/* Router ke andar rakha */}
-      <Navbar />
-       <LiveChat />
+      <ProgressHandler />
+      {/* Navbar Skeleton */}
+      {loading ? <NavbarSkeleton /> : <Navbar />}
+
+      <LiveChat />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/articles" element={<Articles />} />
-         <Route path="/blog/:id" element={<BlogPost/>} />
-        <Route path="/contact" element={<Contact />} />
+        {/* ✅ About skeleton lag gaya */}
+        <Route path="/about" element={loading ? <AboutSkeleton /> : <About />} />
+        <Route path="/projects" element={loading ? <ProjectsSkeleto/> : <Projects />} />
+        <Route path="/articles" element={loading ? <BlogListSkeleton/> : <Articles />} />
+        <Route path="/blog/:id" element={loading ? <BlogPostSkeleton/> : <BlogPost />} />
+        <Route path="/contact" element={loading ? <ContactSkeleton/> : <Contact />} />
       </Routes>
-      <Footer/>
-      <Chatbot/>
+      
+      {loading ? <NavbarSkeleton /> : <Footer />}
+      <Chatbot />
     </Router>
   );
 }
 
 export default App;
+
 
 // "Primary: #00BCD4
 

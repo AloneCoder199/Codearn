@@ -7,6 +7,9 @@ import PortfolioSection from "../Components/PortfolioSection";
 import TestimonialSection from "../Components/TestimonialSection";
 import { Link } from "react-router-dom";
 import AboutSection from "../Components/AboutSection";
+import HeroSectionSkeleton from "../Components/Skeleton/HeroSectionSkeleton";
+import { useState, useEffect } from "react";
+import ServicesSectionSkeleton from "../Components/Skeleton/ServicesSectionSkeleton";
 // Production-ready single-file React component (Tailwind CSS assumed).
 // Replace placeholder images and data with your real content.
 
@@ -56,7 +59,11 @@ export default function CodEarnTechHome() {
       text: "Fast turnaround, clear communication, aur excellent UI polish.",
     },
   ];
-
+const [loading, setLoading] = useState(true);
+ useEffect(() => {
+    // simulate API loading
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
   return (
     <div style={{ background: bg, color: text }} className="min-h-screen font-sans">
       {/* Root CSS variables for easy theme changes */}
@@ -67,10 +74,13 @@ export default function CodEarnTechHome() {
 
       {/* HERO */}
       <main className="px-6 md:px-12">
-    <HeroSection/>
+    {/* <HeroSection/> */}
+    {loading ? <HeroSectionSkeleton /> : <HeroSection/>}
+    {/* <HeroSectionSkeleton/> */}
 
         {/* SERVICES */}
-      <ServicesSection/>
+      {/* <ServicesSection/> */}
+      {loading ? <ServicesSectionSkeleton/> : <ServicesSection />}
 
         {/* PORTFOLIO */}
         <PortfolioSection/>

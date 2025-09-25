@@ -74,6 +74,7 @@ const TypingEffect = ({ texts, speed = 40, delay = 1500 }) => {
 
   return <span>{displayedText}</span>;
 };
+  
 
 
 
