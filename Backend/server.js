@@ -227,16 +227,88 @@ app.get("/api/repos", async (req, res) => {
     });
 
     if (!response.ok) {
+      const errText = await response.text();
+      console.error("❌ GitHub API Error Response:", errText);
       return res.status(response.status).json({ error: "GitHub API error" });
     }
 
     const data = await response.json();
     res.json(data);
+
   } catch (err) {
-    console.error("❌ GitHub API Error:", err);
-    res.status(500).json({ error: err.message });
+    console.error("❌ GitHub API Error (Catch Block):", {
+      message: err.message,
+      code: err.code || null,
+      errno: err.errno || null,
+      syscall: err.syscall || null,
+    });
+    res.status(500).json({ error: "Failed to fetch GitHub repos", details: err.message });
   }
 });
+
+
+// ============================
+// 🌐 Dynamic Sitemap Generator
+// ============================
+app.get("/sitemap.xml", (req, res) => {
+  try {
+    // Example: Tumhare static pages
+    const pages = [
+      { url: "/", priority: "1.0" },
+      { url: "/about", priority: "0.9" },
+      { url: "/services", priority: "0.9" },
+      { url: "/blog", priority: "0.8" },
+      { url: "/contact", priority: "0.8" },
+      { url: "/privacy-policy", priority: "0.6" },
+      { url: "/terms", priority: "0.6" },
+    ];
+
+    // Agar tumhare paas blog posts DB (MongoDB / JSON) me store hote hain
+    // For demo: ek dummy array of posts
+    const blogPosts = [
+      { slug: "mern-stack-development", updated: "2025-09-25" },
+      { slug: "web-hosting-guide", updated: "2025-09-25" },
+      { slug: "future-of-ai", updated: "2025-09-25" },
+    ];
+
+    // Base domain
+    const BASE_URL = "https://codearntech.cloud";
+
+    // XML bana rahe hain
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    // Static pages add karo
+    pages.forEach((p) => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${BASE_URL}${p.url}</loc>\n`;
+      xml += `    <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>\n`;
+      xml += `    <priority>${p.priority}</priority>\n`;
+      xml += `  </url>\n`;
+    });
+
+    // Blog posts add karo
+    blogPosts.forEach((post) => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${BASE_URL}/blog/${post.slug}</loc>\n`;
+      xml += `    <lastmod>${post.updated}</lastmod>\n`;
+      xml += `    <priority>0.7</priority>\n`;
+      xml += `  </url>\n`;
+    });
+
+    xml += `</urlset>`;
+
+    // Response header
+    res.header("Content-Type", "application/xml");
+    res.send(xml);
+  } catch (err) {
+    console.error("❌ Sitemap Error:", err);
+    res.status(500).send("Error generating sitemap");
+  }
+});
+
+
+
 
 // ============================
 // 🚀 Start Server
